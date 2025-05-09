@@ -1,7 +1,10 @@
 package com.github.ansgrb.wingit
 
-interface Platform {
-    val name: String
+enum class Platform {
+    ANDROID,
+    IOS,
+    DESKTOP,
+    WEB
 }
 
 expect fun getPlatform(): Platform
