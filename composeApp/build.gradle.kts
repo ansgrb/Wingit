@@ -58,6 +58,12 @@ kotlin {
         androidMain.dependencies {
             implementation(compose.preview)
             implementation(libs.androidx.activity.compose)
+
+            // koin --android-target
+            implementation(libs.koin.android)
+
+            // exo player --android-target
+            implementation(libs.exo.player)
         }
         commonMain.dependencies {
             implementation(compose.runtime)
@@ -69,6 +75,18 @@ kotlin {
             implementation(libs.androidx.lifecycle.viewmodel)
             implementation(libs.androidx.lifecycle.runtime.compose)
             implementation(projects.shared)
+
+            // koin
+            implementation(libs.koin.core)
+            implementation(libs.koin.compose)
+
+            // multiplatform settings
+            implementation(libs.multiplatform.settings)
+            implementation(libs.multiplatform.settings.noArg)
+            implementation(libs.multiplatform.settings.make.observable)
+
+            // sprite from stevdza
+            implementation(libs.sprite.kmp)
         }
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
