@@ -1,3 +1,3 @@
-package com.github.ansgrb.wingit
+package com.github.ansgrb.wingit.util
 
 actual fun getPlatform(): Platform = Platform.WEB

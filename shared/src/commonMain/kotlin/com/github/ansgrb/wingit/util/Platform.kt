@@ -1,4 +1,4 @@
-package com.github.ansgrb.wingit
+package com.github.ansgrb.wingit.util
 
 enum class Platform {
     ANDROID,
