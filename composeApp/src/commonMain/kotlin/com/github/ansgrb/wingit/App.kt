@@ -33,12 +33,7 @@ fun App() {
     MaterialTheme {
         var screenWidth by remember { mutableStateOf(0) }
         var screenHeight by remember { mutableStateOf(0) }
-        var game = remember(screenHeight, screenWidth) {
-            GameController(
-                screenWidth = screenWidth,
-                screenHeight = screenHeight
-            )
-        }
+        var game = remember{ GameController() }
 
         LaunchedEffect(Unit) {
             game.start()
@@ -80,10 +75,14 @@ fun App() {
                         }
                     }
                     .onGloballyPositioned { // to get the size of the screen
-                        if (screenWidth == 0) {
-                            screenWidth = it.size.width
-                        } else if (screenHeight == 0) {
-                            screenHeight = it.size.height
+                        val size = it.size
+                        if (screenWidth != size.width || screenHeight != size.height) {
+                            screenWidth = size.width
+                            screenHeight = size.height
+                            game = game.copy(
+                                screenWidth = screenWidth,
+                                screenHeight = screenHeight
+                            )
                         }
                     }
             ) {

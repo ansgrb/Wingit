@@ -21,8 +21,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 
 data class GameController(
-    val screenWidth: Int,
-    val screenHeight: Int,
+    val screenWidth: Int = 0,
+    val screenHeight: Int = 0,
     val gravity: Float = 0.7f,
     val theWingedJumpImpulse: Float = -12f,
     val theWingedMaxVelocity: Float = 25f
@@ -34,10 +34,11 @@ data class GameController(
         private set
     var winged by mutableStateOf(
         TheWinged(
-            x =  screenWidth / 2f, // center of the screen
+            x =  screenWidth / 3.5f, // center of the screen
             y = screenHeight / 2f // center of the screen
         )
     )
+        private set
     //______status functions_________
     fun start() {
         status = GameStatus.STARTED
