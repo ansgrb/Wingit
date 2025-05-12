@@ -22,5 +22,6 @@ enum class GameStatus {
     PAUSED,
     RESUMED,
     STOPPED,
+    OVER,
 }
 
