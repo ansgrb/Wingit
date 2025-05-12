@@ -17,9 +17,10 @@
 package com.github.ansgrb.wingit.util
 
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
-
+import org.jetbrains.compose.resources.Font
+import wingit.composeapp.generated.resources.Res
+import wingit.composeapp.generated.resources.chewy_regular
 
 @Composable
 fun ChewyFontFamily() = FontFamily(Font(Res.font.chewy_regular))
