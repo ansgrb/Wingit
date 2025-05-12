@@ -62,6 +62,13 @@ data class GameController(
         }
     }
     fun update() {
+        if (winged.y < 0f) {
+            stopGame()
+            return // we can return from here to avoid the game to go over the screen
+        } else if (winged.y > screenHeight) {
+            over()
+            return
+        }
         if (status == GameStatus.STARTED) {
             theWingedVelocity += gravity
             theWingedVelocity = theWingedVelocity.coerceAtMost(theWingedMaxVelocity)
@@ -70,5 +77,14 @@ data class GameController(
                 over()
             }
         }
+    }
+//    fun reset() {
+//        status = GameStatus.IDLE
+//        theWingedVelocity = 0f
+//        winged = winged.copy(y = screenHeight / 2f)
+//    }
+    fun stopGame() {
+        status = GameStatus.OVER
+        winged = winged.copy(y = 0f)
     }
 }

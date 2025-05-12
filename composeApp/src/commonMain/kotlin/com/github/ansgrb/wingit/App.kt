@@ -3,6 +3,7 @@ package com.github.ansgrb.wingit
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -33,7 +34,7 @@ fun App() {
     MaterialTheme {
         var screenWidth by remember { mutableStateOf(0) }
         var screenHeight by remember { mutableStateOf(0) }
-        var game = remember{ GameController() }
+        var game by remember { mutableStateOf(GameController()) }
 
         LaunchedEffect(Unit) {
             game.start()
@@ -116,7 +117,21 @@ fun App() {
                 fontSize = MaterialTheme.typography.headlineLarge.fontSize,
             )
         }
-
-
+        if (game.status == GameStatus.OVER) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(all = 48.dp)
+                    .background(color = Color.Black.copy(alpha = 0.5f))
+            ) {
+                Text(
+                    text = "GAME OVER",
+                    color = Color.White,
+                    fontFamily = ChewyFontFamily(),
+                    fontWeight = FontWeight.Bold,
+                    fontSize = MaterialTheme.typography.headlineLarge.fontSize,
+                )
+            }
+        }
     }
 }
