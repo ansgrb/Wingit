@@ -32,11 +32,13 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.rotate
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.text.font.FontVariation.width
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
@@ -210,6 +212,30 @@ fun App() {
                     )
                 )
             }
+            game.pipePairs.forEach { pipePair ->
+                drawRect( // top pipe
+                    color = Color.Green,
+                    topLeft = Offset(
+                        x = pipePair.x - game.pipeWidth / 2,
+                        y = 0f
+                    ),
+                    size = Size(
+                        width = game.pipeWidth,
+                        height = pipePair.topHeight
+                    )
+                )
+                drawRect( // bottom pipe
+                    color = Color.Green,
+                    topLeft = Offset(
+                        x = pipePair.x - game.pipeWidth / 2,
+                        y = pipePair.y + game.pipeGapSize / 2
+                    ),
+                    size = Size(
+                        width = game.pipeWidth,
+                        height = pipePair.bottomHeight
+                    )
+                )
+            }
         }
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
@@ -265,8 +291,6 @@ fun App() {
                 }
             }
         }
-
-
         if (game.status == GameStatus.OVER) {
             Column(
                 verticalArrangement = Arrangement.Center,
