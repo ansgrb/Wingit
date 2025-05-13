@@ -1,7 +1,12 @@
 package com.github.ansgrb.wingit
 
 
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -11,10 +16,9 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.PlayArrow
@@ -32,12 +36,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.rotate
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import com.github.ansgrb.wingit.domain.GameController
 import com.github.ansgrb.wingit.domain.GameStatus
 import com.github.ansgrb.wingit.util.ChewyFontFamily
+import com.github.ansgrb.wingit.util.THEWINGT_FRAME_SIZE
 import com.stevdza_san.sprite.component.drawSpriteView
 import com.stevdza_san.sprite.domain.SpriteSheet
 import com.stevdza_san.sprite.domain.SpriteSpec
@@ -47,8 +53,7 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 import wingit.composeapp.generated.resources.Res
 import wingit.composeapp.generated.resources.background
 import wingit.composeapp.generated.resources.bee_sprite
-
-const val THEWINGT_FRAME_SIZE = 80
+import wingit.composeapp.generated.resources.moving_background
 
 @Composable
 @Preview
@@ -105,8 +110,28 @@ fun App() {
             }
         }
 
+        val backgroundOffsetX = remember { Animatable(0f) }
+        var terrainImageWidth by remember { mutableStateOf(0) }
+
+        LaunchedEffect(game.status) {
+            while (game.status == GameStatus.STARTED) {
+                backgroundOffsetX.animateTo(
+                    targetValue = terrainImageWidth.toFloat(),
+                    animationSpec = infiniteRepeatable(
+                        animation = tween(
+                            durationMillis = 4000,
+                            easing = LinearEasing
+                        ),
+                        repeatMode = RepeatMode.Restart
+                    )
+                )
+            }
+        }
+
         Box(
-            modifier = Modifier.fillMaxSize()
+            contentAlignment = Alignment.BottomCenter,
+            modifier = Modifier
+                .fillMaxSize()
         ){
             Image(
                 modifier = Modifier.fillMaxSize(),
@@ -114,46 +139,76 @@ fun App() {
                 contentDescription =  "background",
                 contentScale = ContentScale.Crop
             )
-
-            Canvas(
-                modifier =  Modifier
+            Image(
+                modifier = Modifier
                     .fillMaxSize()
-                    .clickable {
-                        if (game.status == GameStatus.STARTED) {
-                            game.jump()
-                        }
+                    .onSizeChanged {
+                        terrainImageWidth = it.width
                     }
-                    .onGloballyPositioned { // to get the size of the screen
-                        val size = it.size
-                        if (screenWidth != size.width || screenHeight != size.height) {
-                            screenWidth = size.width
-                            screenHeight = size.height
-                            game = game.copy(
-                                screenWidth = screenWidth,
-                                screenHeight = screenHeight
-                            )
-                        }
-                    }
-            ) {
-                game.update()
-                rotate(
-                    degrees = animateAngle,
-                    pivot = Offset(
-                        x = game.winged.x - game.theWingedRadius,
-                        y = game.winged.y - game.theWingedRadius
-                    )
-                ) {
-                    drawSpriteView(
-                        spriteState = spriteState,
-                        spriteSpec = spriteSpec,
-                        currentFrame = currentFrame,
-                        image = sheetImage,
-                        offset = IntOffset(
-                            x = (game.winged.x - game.theWingedRadius).toInt(),
-                            y = (game.winged.y - game.theWingedRadius).toInt()
+                    .offset {
+                        IntOffset(
+                            x = backgroundOffsetX.value.toInt(),
+                            y = 0
                         )
-                    )
+                    }
+                ,
+                painter = painterResource(Res.drawable.moving_background),
+                contentDescription =  "Terrain background",
+                contentScale = ContentScale.FillHeight
+            )
+            Image(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .offset {
+                        IntOffset(
+                            x = backgroundOffsetX.value.toInt() + terrainImageWidth,
+                            y = 0
+                        )
+                    }
+                ,
+                painter = painterResource(Res.drawable.moving_background),
+                contentDescription =  "Terrain background",
+                contentScale = ContentScale.FillHeight
+            )
+        }
+        Canvas(
+            modifier =  Modifier
+                .fillMaxSize()
+                .clickable {
+                    if (game.status == GameStatus.STARTED) {
+                        game.jump()
+                    }
                 }
+                .onGloballyPositioned { // to get the size of the screen
+                    val size = it.size
+                    if (screenWidth != size.width || screenHeight != size.height) {
+                        screenWidth = size.width
+                        screenHeight = size.height
+                        game = game.copy(
+                            screenWidth = screenWidth,
+                            screenHeight = screenHeight
+                        )
+                    }
+                }
+        ) {
+            game.update()
+            rotate(
+                degrees = animateAngle,
+                pivot = Offset(
+                    x = game.winged.x - game.theWingedRadius,
+                    y = game.winged.y - game.theWingedRadius
+                )
+            ) {
+                drawSpriteView(
+                    spriteState = spriteState,
+                    spriteSpec = spriteSpec,
+                    currentFrame = currentFrame,
+                    image = sheetImage,
+                    offset = IntOffset(
+                        x = (game.winged.x - game.theWingedRadius).toInt(),
+                        y = (game.winged.y - game.theWingedRadius).toInt()
+                    )
+                )
             }
         }
         Row(

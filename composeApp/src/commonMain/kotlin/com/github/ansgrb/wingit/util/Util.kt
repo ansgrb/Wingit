@@ -24,3 +24,6 @@ import wingit.composeapp.generated.resources.chewy_regular
 
 @Composable
 fun ChewyFontFamily() = FontFamily(Font(Res.font.chewy_regular))
+
+const val THEWINGT_FRAME_SIZE = 80
+
