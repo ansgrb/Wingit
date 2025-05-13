@@ -23,6 +23,7 @@ import androidx.compose.runtime.setValue
 data class GameController(
     val screenWidth: Int = 0,
     val screenHeight: Int = 0,
+    val theWingedRadius: Float = 30f,
     val gravity: Float = 0.6f,
     val theWingedJumpImpulse: Float = -13f,
     val theWingedMaxVelocity: Float = 25f
@@ -35,7 +36,8 @@ data class GameController(
     var winged by mutableStateOf(
         TheWinged(
             x =  screenWidth / 3.5f, // little bit left from the center of the screen
-            y = screenHeight / 2f // center of the screen
+            y = screenHeight / 2f, // center of the screen
+            radius = theWingedRadius // the radius of the winged
         )
     )
         private set

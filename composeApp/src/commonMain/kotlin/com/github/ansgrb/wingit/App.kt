@@ -1,6 +1,7 @@
 package com.github.ansgrb.wingit
 
 
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -18,6 +19,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.drawscope.rotate
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.text.font.FontWeight
@@ -64,6 +66,12 @@ fun App() {
 
         val currentFrame by spriteState.currentFrame.collectAsState()
         val sheetImage = spriteSpec.imageBitmap
+        val animateAngle by animateFloatAsState(
+            targetValue = when {
+                game.theWingedVelocity > game.theWingedMaxVelocity / 1.1 -> 30f
+                else -> 0f
+            }
+        )
 
         LaunchedEffect(Unit) {
             game.start()
@@ -73,6 +81,9 @@ fun App() {
             while (game.status == GameStatus.STARTED) {
                 withFrameMillis {
                     game.update()
+                }
+                if (game.status == GameStatus.OVER) {
+                    spriteState.stop()
                 }
             }
         }
@@ -108,16 +119,24 @@ fun App() {
                     }
             ) {
                 game.update()
-                drawSpriteView(
-                    spriteState = spriteState,
-                    spriteSpec = spriteSpec,
-                    currentFrame = currentFrame,
-                    image = sheetImage,
-                    offset = IntOffset(
-                        x = game.winged.x.toInt(),
-                        y = game.winged.y.toInt()
+                rotate(
+                    degrees = animateAngle,
+                    pivot = Offset(
+                        x = game.winged.x - game.theWingedRadius,
+                        y = game.winged.y - game.theWingedRadius
                     )
-                )
+                ) {
+                    drawSpriteView(
+                        spriteState = spriteState,
+                        spriteSpec = spriteSpec,
+                        currentFrame = currentFrame,
+                        image = sheetImage,
+                        offset = IntOffset(
+                            x = (game.winged.x - game.theWingedRadius).toInt(),
+                            y = (game.winged.y - game.theWingedRadius).toInt()
+                        )
+                    )
+                }
             }
         }
         Row(

@@ -19,5 +19,5 @@ package com.github.ansgrb.wingit.domain
 data class TheWinged(
     val x: Float,
     val y: Float,
-    val radius: Float = 30f
+    val radius: Float
 )
