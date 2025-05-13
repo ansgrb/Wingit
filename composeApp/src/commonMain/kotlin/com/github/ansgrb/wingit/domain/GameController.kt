@@ -26,7 +26,6 @@ import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import kotlin.random.Random
 
-
 data class GameController(
     val screenWidth: Int = 0,
     val screenHeight: Int = 0,
