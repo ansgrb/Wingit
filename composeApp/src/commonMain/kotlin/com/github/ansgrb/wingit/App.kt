@@ -73,6 +73,13 @@ fun App() {
             }
         )
 
+        DisposableEffect(Unit) {
+            onDispose {
+                spriteState.stop()
+                spriteState.cleanup() // cleanup the sprite state (coroutine scope)
+            }
+        }
+
         LaunchedEffect(Unit) {
             game.start()
             spriteState.start()
