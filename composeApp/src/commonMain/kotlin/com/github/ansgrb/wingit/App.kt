@@ -12,6 +12,9 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
@@ -80,10 +83,10 @@ fun App() {
             }
         }
 
-        LaunchedEffect(Unit) {
-            game.start()
-            spriteState.start()
-        }
+//        LaunchedEffect(Unit) {
+//            game.start()
+//            spriteState.start()
+//        }
         LaunchedEffect(game.status) {
             while (game.status == GameStatus.STARTED) {
                 withFrameMillis {
@@ -165,6 +168,35 @@ fun App() {
                 fontSize = MaterialTheme.typography.headlineLarge.fontSize,
             )
         }
+        if (game.status == GameStatus.IDLE) {
+            Box(
+                contentAlignment = Alignment.Center,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(
+                        color = Color.Black.copy(alpha = 0.5f)
+                    )
+            ) {
+                Button(
+                    onClick = {
+                        game.start()
+                        spriteState.start()
+                    },
+                    shape = RoundedCornerShape(size = 16.dp),
+                    colors = ButtonDefaults.buttonColors(containerColor = Color.Yellow),
+                    modifier = Modifier.padding(16.dp)
+                ) {
+                    Text(
+                        text = "START",
+                        fontFamily = ChewyFontFamily(),
+                        fontWeight = FontWeight.Bold,
+                        fontSize = MaterialTheme.typography.headlineLarge.fontSize,
+                    )
+                }
+            }
+        }
+
+
         if (game.status == GameStatus.OVER) {
             Column(
                 verticalArrangement = Arrangement.Center,
