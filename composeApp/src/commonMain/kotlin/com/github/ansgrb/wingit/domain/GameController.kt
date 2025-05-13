@@ -20,10 +20,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import com.github.ansgrb.wingit.util.SCORE_KEY
 import com.russhwolf.settings.ObservableSettings
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import kotlin.random.Random
+
 
 data class GameController(
     val screenWidth: Int = 0,
@@ -51,6 +53,18 @@ data class GameController(
     )
         private set
     var pipePairs = mutableStateListOf<PipePair>()
+    var currentScore by mutableStateOf(0)
+        private set
+    var bestScore by mutableStateOf(0)
+        private set
+
+    init {
+        bestScore = setting.getInt(SCORE_KEY, 0)
+        setting.addIntListener(SCORE_KEY, 0) {
+            bestScore = it
+        }
+    }
+
     //______status functions_________
     fun start() {
         status = GameStatus.STARTED
@@ -60,6 +74,7 @@ data class GameController(
     }
     fun over() {
         status = GameStatus.OVER
+        saveScore()
     }
     //______game loop functions_________
     fun jump() {
@@ -72,6 +87,10 @@ data class GameController(
             if (checkCollision(pipePair = pipePair)) {
                 over()
                 return
+            }
+            if (!pipePair.scored && winged.x > pipePair.x + pipeWidth / 2) {
+                pipePair.scored = true
+                currentScore++
             }
         }
         if (winged.y < 0f) {
@@ -149,5 +168,11 @@ data class GameController(
     }
     private fun removePipes() {
         pipePairs.clear()
+    }
+    private fun saveScore() {
+        if (bestScore < currentScore) {
+            setting.putInt(SCORE_KEY, currentScore)
+            bestScore = currentScore
+        }
     }
 }

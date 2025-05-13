@@ -27,4 +27,6 @@ fun ChewyFontFamily() = FontFamily(Font(Res.font.chewy_regular))
 
 const val THEWINGT_FRAME_SIZE = 80
 const val PIPE_CAP_HEIGHT = 50F
+const val SCORE_KEY = "score"
+
 
