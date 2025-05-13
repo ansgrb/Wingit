@@ -23,8 +23,8 @@ import androidx.compose.runtime.setValue
 data class GameController(
     val screenWidth: Int = 0,
     val screenHeight: Int = 0,
-    val gravity: Float = 0.7f,
-    val theWingedJumpImpulse: Float = -12f,
+    val gravity: Float = 0.5f,
+    val theWingedJumpImpulse: Float = -15f,
     val theWingedMaxVelocity: Float = 25f
 ) {
     //______mutable props_________
@@ -34,7 +34,7 @@ data class GameController(
         private set
     var winged by mutableStateOf(
         TheWinged(
-            x =  screenWidth / 3.5f, // center of the screen
+            x =  screenWidth / 3.5f, // little bit left from the center of the screen
             y = screenHeight / 2f // center of the screen
         )
     )
@@ -63,7 +63,7 @@ data class GameController(
     }
     fun update() {
         if (winged.y < 0f) {
-            stopGame()
+//            stopGame()
             return // we can return from here to avoid the game to go over the screen
         } else if (winged.y > screenHeight) {
             over()
