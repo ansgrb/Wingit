@@ -50,6 +50,7 @@ import com.stevdza_san.sprite.component.drawSpriteView
 import com.stevdza_san.sprite.domain.SpriteSheet
 import com.stevdza_san.sprite.domain.SpriteSpec
 import com.stevdza_san.sprite.domain.rememberSpriteState
+import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.imageResource
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -67,12 +68,10 @@ fun App() {
         var screenWidth by remember { mutableStateOf(0) }
         var screenHeight by remember { mutableStateOf(0) }
         var game by remember { mutableStateOf(GameController()) }
-
         val spriteState = rememberSpriteState(
             totalFrames = 9,
             framesPerRow = 3
         )
-
         val spriteSpec = remember {
             SpriteSpec(
                 screenWidth = screenWidth.toFloat(),
@@ -83,7 +82,6 @@ fun App() {
                 )
             )
         }
-
         val currentFrame by spriteState.currentFrame.collectAsState()
         val sheetImage = spriteSpec.imageBitmap
         val animateAngle by animateFloatAsState(
@@ -92,18 +90,12 @@ fun App() {
                 else -> 0f
             }
         )
-
         DisposableEffect(Unit) {
             onDispose {
                 spriteState.stop()
                 spriteState.cleanup() // cleanup the sprite state (coroutine scope)
             }
         }
-
-//        LaunchedEffect(Unit) {
-//            game.start()
-//            spriteState.start()
-//        }
         LaunchedEffect(game.status) {
             while (game.status == GameStatus.STARTED) {
                 withFrameMillis {
@@ -114,7 +106,7 @@ fun App() {
                 }
             }
         }
-
+        val scope = rememberCoroutineScope()
         val backgroundOffsetX = remember { Animatable(0f) }
         var terrainImageWidth by remember { mutableStateOf(0) }
         val pipeImage = imageResource(Res.drawable.pipe)
@@ -134,7 +126,6 @@ fun App() {
                 )
             }
         }
-
         Box(
             contentAlignment = Alignment.BottomCenter,
             modifier = Modifier
@@ -218,28 +209,6 @@ fun App() {
                 )
             }
             game.pipePairs.forEach { pipePair ->
-//                drawRect( // top pipe
-//                    color = Color.Green,
-//                    topLeft = Offset(
-//                        x = pipePair.x - game.pipeWidth / 2,
-//                        y = 0f
-//                    ),
-//                    size = Size(
-//                        width = game.pipeWidth,
-//                        height = pipePair.topHeight
-//                    )
-//                )
-//                drawRect( // bottom pipe
-//                    color = Color.Green,
-//                    topLeft = Offset(
-//                        x = pipePair.x - game.pipeWidth / 2,
-//                        y = pipePair.y + game.pipeGapSize / 2
-//                    ),
-//                    size = Size(
-//                        width = game.pipeWidth,
-//                        height = pipePair.bottomHeight
-//                    )
-//                )
                 drawImage(
                     image = pipeImage,
                     dstOffset = IntOffset(
@@ -366,6 +335,9 @@ fun App() {
                     onClick = {
                         game.restart()
                         spriteState.start()
+                        scope.launch {
+                            backgroundOffsetX.snapTo(0f)
+                        }
                     },
                     shape = RoundedCornerShape(size = 16.dp),
                     colors = ButtonDefaults.buttonColors(containerColor = Color.Yellow),

@@ -164,6 +164,7 @@ data class GameController(
     fun restart() {
         reset()
         removePipes()
+        clearScore()
         start()
     }
     private fun removePipes() {
@@ -174,5 +175,8 @@ data class GameController(
             setting.putInt(SCORE_KEY, currentScore)
             bestScore = currentScore
         }
+    }
+    private fun clearScore() {
+        currentScore = 0
     }
 }
