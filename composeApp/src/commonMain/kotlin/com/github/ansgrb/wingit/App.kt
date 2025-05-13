@@ -227,6 +227,13 @@ fun App() {
                     fontWeight = FontWeight.Bold,
                     fontSize = MaterialTheme.typography.headlineLarge.fontSize,
                 )
+                Text(
+                    text = "SCORE: 0",
+                    color = Color.White,
+                    fontFamily = ChewyFontFamily(),
+                    fontWeight = FontWeight.Bold,
+                    fontSize = MaterialTheme.typography.titleLarge.fontSize,
+                )
                 Button(
                     onClick = {
                         game.restart()

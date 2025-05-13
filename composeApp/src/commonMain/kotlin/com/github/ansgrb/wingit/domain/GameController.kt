@@ -81,10 +81,7 @@ data class GameController(
     fun reset() {
         status = GameStatus.IDLE
         theWingedVelocity = 0f
-        winged = winged.copy(
-            x = screenWidth / 3.5f,
-            y = screenHeight / 2f
-        )
+        winged = winged.copy(y = screenHeight / 2f)
     }
     fun restart() {
         reset()
