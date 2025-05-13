@@ -26,4 +26,5 @@ import wingit.composeapp.generated.resources.chewy_regular
 fun ChewyFontFamily() = FontFamily(Font(Res.font.chewy_regular))
 
 const val THEWINGT_FRAME_SIZE = 80
+const val PIPE_CAP_HEIGHT = 50F
 
