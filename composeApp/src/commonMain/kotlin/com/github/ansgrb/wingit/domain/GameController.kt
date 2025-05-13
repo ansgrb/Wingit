@@ -73,7 +73,7 @@ data class GameController(
         }
     }
     fun stopGame() {
-        status = GameStatus.OVER
+//        status = GameStatus.OVER
         winged = winged.copy(y = 0f)
     }
     fun reset() {

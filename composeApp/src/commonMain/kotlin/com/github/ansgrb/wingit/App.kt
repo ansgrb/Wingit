@@ -21,14 +21,22 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import com.github.ansgrb.wingit.domain.GameController
 import com.github.ansgrb.wingit.domain.GameStatus
 import com.github.ansgrb.wingit.util.ChewyFontFamily
+import com.stevdza_san.sprite.component.drawSpriteView
+import com.stevdza_san.sprite.domain.SpriteSheet
+import com.stevdza_san.sprite.domain.SpriteSpec
+import com.stevdza_san.sprite.domain.rememberSpriteState
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import wingit.composeapp.generated.resources.Res
 import wingit.composeapp.generated.resources.background
+import wingit.composeapp.generated.resources.bee_sprite
+
+const val THEWINGT_FRAME_SIZE = 80
 
 @Composable
 @Preview
@@ -38,8 +46,28 @@ fun App() {
         var screenHeight by remember { mutableStateOf(0) }
         var game by remember { mutableStateOf(GameController()) }
 
+        val spriteState = rememberSpriteState(
+            totalFrames = 9,
+            framesPerRow = 3
+        )
+
+        val spriteSpec = remember {
+            SpriteSpec(
+                screenWidth = screenWidth.toFloat(),
+                default = SpriteSheet(
+                    frameWidth = THEWINGT_FRAME_SIZE,
+                    frameHeight = THEWINGT_FRAME_SIZE,
+                    image = Res.drawable.bee_sprite
+                )
+            )
+        }
+
+        val currentFrame by spriteState.currentFrame.collectAsState()
+        val sheetImage = spriteSpec.imageBitmap
+
         LaunchedEffect(Unit) {
             game.start()
+            spriteState.start()
         }
         LaunchedEffect(game.status) {
             while (game.status == GameStatus.STARTED) {
@@ -80,12 +108,14 @@ fun App() {
                     }
             ) {
                 game.update()
-                drawCircle(
-                    color = Color.Red,
-                    radius = game.winged.radius,
-                    center = Offset( // TODO: add a center value to the winged class
-                        x = game.winged.x,
-                        y = game.winged.y
+                drawSpriteView(
+                    spriteState = spriteState,
+                    spriteSpec = spriteSpec,
+                    currentFrame = currentFrame,
+                    image = sheetImage,
+                    offset = IntOffset(
+                        x = game.winged.x.toInt(),
+                        y = game.winged.y.toInt()
                     )
                 )
             }
