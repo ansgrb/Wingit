@@ -86,4 +86,8 @@ data class GameController(
             y = screenHeight / 2f
         )
     }
+    fun restart() {
+        reset()
+        start()
+    }
 }
