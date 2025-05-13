@@ -116,7 +116,7 @@ fun App() {
         LaunchedEffect(game.status) {
             while (game.status == GameStatus.STARTED) {
                 backgroundOffsetX.animateTo(
-                    targetValue = terrainImageWidth.toFloat(),
+                    targetValue = - terrainImageWidth.toFloat(),
                     animationSpec = infiniteRepeatable(
                         animation = tween(
                             durationMillis = 4000,
