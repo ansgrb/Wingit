@@ -20,8 +20,6 @@ enum class GameStatus {
     IDLE,
     STARTED,
     PAUSED,
-    RESUMED,
-    STOPPED,
     OVER,
 }
 

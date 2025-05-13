@@ -42,16 +42,10 @@ fun App() {
             game.start()
         }
         LaunchedEffect(game.status) {
-            when (game.status) {
-                GameStatus.IDLE -> {}
-                GameStatus.STARTED -> {
-                    withFrameMillis {
-                        game.update()
-                    }
+            while (game.status == GameStatus.STARTED) {
+                withFrameMillis {
+                    game.update()
                 }
-                GameStatus.PAUSED -> {}
-                GameStatus.OVER -> {}
-                else -> {}
             }
         }
 
@@ -69,12 +63,8 @@ fun App() {
                 modifier =  Modifier
                     .fillMaxSize()
                     .clickable {
-                        when (game.status) {
-                            GameStatus.IDLE -> game.start()
-                            GameStatus.STARTED -> game.jump()
-                            GameStatus.PAUSED -> game.resume()
-                            GameStatus.OVER -> game.start()
-                            else -> {}
+                        if (game.status == GameStatus.STARTED) {
+                            game.jump()
                         }
                     }
                     .onGloballyPositioned { // to get the size of the screen
