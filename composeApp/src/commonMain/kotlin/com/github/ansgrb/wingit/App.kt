@@ -293,13 +293,13 @@ fun App() {
                 .padding(all = 48.dp)
         ) {
             Text(
-                text = "BEST: 0",
+                text = "BEST: ${game.bestScore}",
                 fontFamily = ChewyFontFamily(),
                 fontWeight = FontWeight.Bold,
                 fontSize = MaterialTheme.typography.headlineLarge.fontSize,
             )
             Text(
-                text = "0",
+                text = "${game.currentScore}",
                 fontFamily = ChewyFontFamily(),
                 fontWeight = FontWeight.Bold,
                 fontSize = MaterialTheme.typography.headlineLarge.fontSize,
@@ -356,7 +356,7 @@ fun App() {
                     fontSize = MaterialTheme.typography.headlineLarge.fontSize,
                 )
                 Text(
-                    text = "SCORE: 0",
+                    text = "SCORE: ${game.currentScore}",
                     color = Color.White,
                     fontFamily = ChewyFontFamily(),
                     fontWeight = FontWeight.Bold,
