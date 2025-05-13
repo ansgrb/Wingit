@@ -64,6 +64,12 @@ data class GameController(
         }
     }
     fun update() {
+        pipePairs.forEach { pipePair ->
+            if (checkCollision(pipePair = pipePair)) {
+                over()
+                return
+            }
+        }
         if (winged.y < 0f) {
             stopGame()
             return // we can return from here to avoid the game to go over the screen
@@ -103,6 +109,24 @@ data class GameController(
             )
             pipePairs.add(newPipePair)
         }
+    }
+    private fun checkCollision(pipePair: PipePair): Boolean {
+        // check ro a horizontal collision
+        val theWingedRightEdge = winged.x + winged.radius
+        val theWingedLeftEdge = winged.x - winged.radius
+        val pipeRightEdge = pipePair.x + pipeWidth / 2
+        val pipeLeftEdge = pipePair.x - pipeWidth / 2
+        val horizontalCollection = theWingedRightEdge > pipeLeftEdge
+                && theWingedLeftEdge < pipeRightEdge
+        // check for the winged to be inside the pipe
+        val theWingedTopEdge = winged.y - winged.radius
+        val theWingedBottomEdge = winged.y + winged.radius
+        val gapTopEdge = pipePair.y - pipeGapSize / 2
+        val gapBottomEdge = pipePair.y + pipeGapSize / 2
+        val wingInsideGap = theWingedTopEdge > gapTopEdge
+                && theWingedBottomEdge < gapBottomEdge
+        // return the result
+        return horizontalCollection && !wingInsideGap
     }
 
     fun stopGame() {

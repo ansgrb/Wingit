@@ -260,7 +260,8 @@ fun App() {
                     ),
                     dstSize = IntSize(
                         width = game.pipeWidth.toInt(),
-                        height = PIPE_CAP_HEIGHT.toInt()                    )
+                        height = PIPE_CAP_HEIGHT.toInt()
+                    )
                 )
                 drawImage(
                     image = pipeCapImage,
