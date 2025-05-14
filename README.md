@@ -2,13 +2,10 @@
 
 Welcome to **Wingit**, the cross-platform, Kotlin-powered game where your only goal is to keep flapping! Simple to play, challenging to master, and available pretty much everywhere.
 
----
-
 ## 🚩 What is Wingit?
 
 Wingit is a **Flappy Bird-inspired arcade game** made with Kotlin Multiplatform! Guide a plucky little winged hero through endless pipes, rack up your score, and try not to crash. Play on desktop, mobile, web, or server — Wingit takes flight on all major platforms!
 
----
 ## 🛠 Requirements
 
 - Java 21+
@@ -16,7 +13,6 @@ Wingit is a **Flappy Bird-inspired arcade game** made with Kotlin Multiplatform!
 - Android Studio or IntelliJ IDEA
 - Xcode (for iOS dev)
 - Node.js & npm (for Web)
----
 
 ## 💡 Features
 
@@ -26,7 +22,6 @@ Wingit is a **Flappy Bird-inspired arcade game** made with Kotlin Multiplatform!
 - **Multiplatform Powers** — Play on Android, iOS, Web, Desktop, and more!
 - **Modern Kotlin Codebase** — Easy to read, extend, and hack.
 
----
 ## ⚙️ Getting Started
 
 1. **Clone the repo**
