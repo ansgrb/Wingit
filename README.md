@@ -1,26 +1,43 @@
-This is a Kotlin Multiplatform project targeting Android, iOS, Web, Desktop, Server.
+# 🕊️ Wingit — The Flappy Adventure
 
-* `/composeApp` is for code that will be shared across your Compose Multiplatform applications.
-  It contains several subfolders:
-  - `commonMain` is for code that’s common for all targets.
-  - Other folders are for Kotlin code that will be compiled for only the platform indicated in the folder name.
-    For example, if you want to use Apple’s CoreCrypto for the iOS part of your Kotlin app,
-    `iosMain` would be the right folder for such calls.
+Welcome to **Wingit**, the cross-platform, Kotlin-powered game where your only goal is to keep flapping! Simple to play, challenging to master, and available pretty much everywhere.
 
-* `/iosApp` contains iOS applications. Even if you’re sharing your UI with Compose Multiplatform, 
-  you need this entry point for your iOS app. This is also where you should add SwiftUI code for your project.
+---
 
-* `/server` is for the Ktor server application.
+## 🚩 What is Wingit?
 
-* `/shared` is for the code that will be shared between all targets in the project.
-  The most important subfolder is `commonMain`. If preferred, you can add code to the platform-specific folders here too.
+Wingit is a **Flappy Bird-inspired arcade game** made with Kotlin Multiplatform! Guide a plucky little winged hero through endless pipes, rack up your score, and try not to crash. Play on desktop, mobile, web, or server — Wingit takes flight on all major platforms!
 
+---
+## 🛠 Requirements
 
-Learn more about [Kotlin Multiplatform](https://www.jetbrains.com/help/kotlin-multiplatform-dev/get-started.html),
-[Compose Multiplatform](https://github.com/JetBrains/compose-multiplatform/#compose-multiplatform),
-[Kotlin/Wasm](https://kotl.in/wasm/)…
+- Java 21+
+- Gradle (Wrapper included)
+- Android Studio or IntelliJ IDEA
+- Xcode (for iOS dev)
+- Node.js & npm (for Web)
+---
 
-We would appreciate your feedback on Compose/Web and Kotlin/Wasm in the public Slack channel [#compose-web](https://slack-chats.kotlinlang.org/c/compose-web).
-If you face any issues, please report them on [GitHub](https://github.com/JetBrains/compose-multiplatform/issues).
+## 💡 Features
 
-You can open the web application by running the `:composeApp:wasmJsBrowserDevelopmentRun` Gradle task.
+- **Classic Flappy Gameplay** — Tap or click to stay in the air and navigate tricky pipe gaps.
+- **Endless Challenge** — See how long you can keep flying.
+- **Best Score Tracking** — Can you beat your record?
+- **Multiplatform Powers** — Play on Android, iOS, Web, Desktop, and more!
+- **Modern Kotlin Codebase** — Easy to read, extend, and hack.
+
+---
+## ⚙️ Getting Started
+
+1. **Clone the repo**
+   ```bash
+   git clone https://github.com/ansgrb/wingit.git
+   cd wingit
+   ```
+
+2. **Build & Run**
+- For Android/iOS: Open the project in Android Studio or Xcode and run the respective target.
+- For Desktop/Web: Use Gradle tasks or your favorite IDE (check module docs for details).
+---
+### Let’s Wingit!
+How high can you fly? 🌟
